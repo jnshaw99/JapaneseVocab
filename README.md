@@ -1,5 +1,5 @@
 # JapaneseVocab
-6000 Japanese Vocab Work Flashcard Game
+6000 Japanese Vocab Work Flashcard Game (Reactjs)
 
 This is a flashcard game that shows 6000 most common vocab words. 
 Full Capability will include
