@@ -16,15 +16,21 @@ class FlashCard extends React.Component{
 }
 
 class FlashCardStack extends React.Component{
+    handleChange(event){
+        this.props.onChange(event);
+    }
+    handleSubmit(event){
+        this.props.onSubmit(event);
+    }
     render(){
         return(
             <div>
                 <span class="flash-stack-nav">
                     <img src={arrow} class="l-arrow-nav" alt='LeftArrow' onClick={this.props.onLeftArrowClick}/>
-                    <form>
-                        <label>Day Number: {this.props.day}<t /></label>
-                        <input type="number"  min="1" max="307" id="newDay"></input>
-                        <input type="submit" value="Change Day"></input>
+                    <form onSubmit={this.handleSubmit.bind(this)}>
+                        <span class="day-number">Day Number: {this.props.day}</span>
+                        <input type="number"  min="1" max="307" id="newDay" onChange={this.handleChange.bind(this)}></input>
+                        <input class="submit-button" type="submit" value="Change Day"></input>
                     </form>
                     <img src={arrow} class="r-arrow-nav" alt="RightArrow" onClick={this.props.onRightArrowClick}/>
                 </span>
@@ -53,6 +59,8 @@ class VocabSys extends React.Component{
             vocabHeader: 0,
             definitionSide: false,
             day: 1,
+            next: 0,
+            length: 20,
         };
         for(let i=0;i<300;i++){
             var VocabWords=Array(20).fill(null);
@@ -66,15 +74,11 @@ class VocabSys extends React.Component{
             this.state.Days[i]=VocabWords;
         }
     }
-    zeroHead(){
-        this.setState({
-            vocabHeader: 0,
-        });
-    }
     nextVocabItem(){
-        if(this.state.vocabHeader<19){
+        if(this.state.vocabHeader<this.state.daysContent.length-1){
             this.setState({
                 vocabHeader: this.state.vocabHeader+1,
+                definitionSide: false,
             });
         }
     }
@@ -82,6 +86,7 @@ class VocabSys extends React.Component{
         if(this.state.vocabHeader>0){
             this.setState({
                 vocabHeader: this.state.vocabHeader-1,
+                definitionSide: false,
             });
         }
     }
@@ -120,6 +125,20 @@ class VocabSys extends React.Component{
         }
         return daysContent;
     }
+    onSubmit(e){
+        e.preventDefault();
+        this.setState({
+            day : this.state.next,
+            daysContent: this.daysContent(),
+            vocabHeader: 0,
+            definitionSide: false,
+        });
+    }
+    onChange(e){
+        this.setState({
+            next: e.target.value,
+        });
+    }
     render(){
         return(
             <div class="flashcard-container">
@@ -134,6 +153,8 @@ class VocabSys extends React.Component{
                 toggleDef={() => this.toggleDef()}
                 daysContent={this.daysContent()}
                 day={this.state.day}
+                onSubmit={this.onSubmit.bind(this)}
+                onChange={this.onChange.bind(this)}
                />
             </div>
         );

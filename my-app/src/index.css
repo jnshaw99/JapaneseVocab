@@ -32,4 +32,9 @@ img.r-arrow-nav{
     height: 20px;
     margin: 0 auto;
 }
-
+span.day-number{
+    padding-right: 10px;
+}
+input.submit-button{
+    margin: 0 10px;
+}
