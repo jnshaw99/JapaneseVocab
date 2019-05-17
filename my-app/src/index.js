@@ -3,13 +3,37 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import arrow from './arrow.png';
 
-class FlashCard extends React.Component{
+class FlashCardFront extends React.Component{
     render(){
         return(
+            <div title={this.props.title}>
+                {this.props.definition}
+            </div>
+        );
+    }
+}
+
+class FlashCardBack extends React.Component{
+    render(){
+        return(
+            <div title={this.props.title}>
+                {this.props.definition}
+            </div>
+        );
+    }
+}
+
+class FlashCard extends React.Component{
+    render(){
+        let cardside;
+        if(this.props.definitionGiven){
+            cardside=<FlashCardFront title={this.props.vocab[1]} definition={this.props.vocab[2]}/>
+        }else{
+            cardside=<FlashCardBack title={this.props.vocab[1]} definition={this.props.vocab[0]}/>
+        }
+        return(
             <div class="flashcard" onClick={this.props.toggleDef}>
-                <div title={this.props.vocab[1]}>
-                    {this.props.definitionGiven ? this.props.vocab[2] : this.props.vocab[0]}
-                </div>
+                {cardside}
             </div>
         );
     }
@@ -29,7 +53,7 @@ class FlashCardStack extends React.Component{
                     <img src={arrow} class="l-arrow-nav" alt='LeftArrow' onClick={this.props.onLeftArrowClick}/>
                     <form onSubmit={this.handleSubmit.bind(this)}>
                         <span class="day-number">Day Number: {this.props.day}</span>
-                        <input type="number"  min="1" max="307" id="newDay" onChange={this.handleChange.bind(this)}></input>
+                        <input type="number"  min="1" max="300" id="newDay" onChange={this.handleChange.bind(this)}></input>
                         <input class="submit-button" type="submit" value="Change Day"></input>
                     </form>
                     <img src={arrow} class="r-arrow-nav" alt="RightArrow" onClick={this.props.onRightArrowClick}/>
@@ -75,7 +99,7 @@ class VocabSys extends React.Component{
         }
     }
     nextVocabItem(){
-        if(this.state.vocabHeader<this.state.daysContent.length-1){
+        if(this.state.vocabHeader<this.state.length-1){
             this.setState({
                 vocabHeader: this.state.vocabHeader+1,
                 definitionSide: false,
@@ -97,30 +121,9 @@ class VocabSys extends React.Component{
     }
     daysContent(){
         let daysContent=Array(0);
-        if(this.state.day>=7){
+        if(this.state.day<=300){
             for(let i=0;i<20;i++){
-                daysContent.push(this.state.Days[this.state.day-7][i]);
-            }
-        }
-        if(this.state.day>=4 && this.state.day<304){
-            for(let i=0;i<20;i++){
-                daysContent.push(this.state.Days[this.state.day-4][i]);
-            }
-        }
-        if(this.state.day>=2 && this.state.day<302){
-            for(let i=0;i<20;i++){
-                daysContent.push(this.state.Days[this.state.day-2][i]);
-            }
-        }
-        if(this.state.day>=1 && this.state.day<301){
-            for(let i=0;i<20;i++){
-                console.log(this.state.Days);
                 daysContent.push(this.state.Days[this.state.day-1][i]);
-            }
-        }
-        if(this.state.day<300){
-            for(let i=0;i<20;i++){
-                daysContent.push(this.state.Days[this.state.day][i]);
             }
         }
         return daysContent;
